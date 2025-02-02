@@ -1,16 +1,23 @@
 use anchor_lang::prelude::*;
 
-declare_id!("9UpkvNvpz2UmhKYkGQt8x1Z3Ty6dF5F5pt7RaoVFWshd");
+
+declare_id!("Cn66ThiVjZ4FrjmRYEWReYMeuwu7iMVXYWeuKecaN49z");
 
 #[program]
-pub mod favorites {
-    use super::*;
+mod hello_solana{
+    use anchor_lang::{prelude::Context, solana_program::nonce::state::Data};
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
-        Ok(())
+    use super::*;
+    // each fn is a instruction
+    pub fn init_account(ctx:Context<Init>,data:u64){
+
     }
 }
 
-#[derive(Accounts)]
-pub struct Initialize {}
+#[derive(Account)]
+pub struct Init <'info>{
+    #[account(init,payer=signer, space = 8+8)]
+    pub new_account:Account<'info,NewAccount>,
+    pub signer: Signer<'info>,
+    pub system_program:Program<'info,System>
+}
