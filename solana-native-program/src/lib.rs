@@ -10,7 +10,7 @@ entrypoint!(counter_contract);
 
 #[derive(BorshSerialize, BorshDeserialize)]
 struct Counter{
-    count: i32
+    count: u32
 }
 
 #[derive(BorshSerialize, BorshDeserialize)]
@@ -29,18 +29,17 @@ fn counter_contract(
 
     let instruction_type = InstructionType::try_from_slice(instruction_data)?;
 
-    let counter = Counter::try_from_slice(&account.data.borrow())?;
+    let mut counter = Counter::try_from_slice(&account.data.borrow())?;
 
     match InstructionType::try_from_slice(instruction_data)? {
         InstructionType::Increatment(n) => {
-            counter += n
+            counter.count += n;
         }
-
         InstructionType::Decreament(n) => {
-            counter -= n
+            counter.count -= n;
         }
-
-        
     }
+    counter.serialize(&mut *account.data.borrow_mut())?;
+    msg!("counter updated {}",counter.count);
     Ok(())
 }
