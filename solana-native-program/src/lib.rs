@@ -19,12 +19,7 @@ enum InstructionType {
     Decreament(u32)
 }
 
-fn counter_contract(
-    program_id: &Pubkey,
-    accounts: &[AccountInfo],
-    instruction_data: &[u8],
-)->ProgramResult{
-
+fn counter_contract(program_id: &Pubkey,accounts: &[AccountInfo],instruction_data: &[u8])->ProgramResult{
     let account = next_account_info(&mut accounts.iter())?;
 
     let instruction_type = InstructionType::try_from_slice(instruction_data)?;
